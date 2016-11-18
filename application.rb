@@ -9,19 +9,19 @@ class PuppyRun < Sinatra::Base
     job.spawn_loop!
   }
 
-
+  def streaming?
+    Jobs::Hitbox.streaming?
+  end
 
   set :public_folder, File.dirname(__FILE__) + '/static'
 
   get '/' do
-    is_streaming = Jobs::Hitbox.streaming?
-
     erb :index,
       layout: :default,
       locals: {
         title: nil,
         page: 'home',
-        is_streaming: is_streaming,
+        is_streaming: streaming?,
       }
   end
 
@@ -31,6 +31,7 @@ class PuppyRun < Sinatra::Base
       locals: {
         title: 'Stream',
         page: 'stream',
+        is_streaming: streaming?,
       }
   end
 
@@ -40,6 +41,7 @@ class PuppyRun < Sinatra::Base
       locals: {
         title: 'Code',
         page: 'code',
+        is_streaming: streaming?,
       }
   end
 
@@ -49,6 +51,17 @@ class PuppyRun < Sinatra::Base
       locals: {
         title: 'Music',
         page: 'music',
+        is_streaming: streaming?,
+      }
+  end
+
+  get '/writing' do
+    erb :writing,
+      layout: :default,
+      locals: {
+        title: 'Writing',
+        page: 'writing',
+        is_streaming: streaming?,
       }
   end
 end
