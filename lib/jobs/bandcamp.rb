@@ -1,24 +1,36 @@
-require 'json'
 require 'tessellator/fetcher'
+require 'nokogiri'
 
 class PuppyRun
   class Jobs
-    class Hitbox
+    class Bandcamp
+      # TODO: Make _name and _slug dynamic.
+      @@album_name = 'Unfinished Thunder'
+      @@album_slug = 'unfinished-thunder'
+      @@album_id = nil
+      @@album_date = nil
+
       def initialize
         @fetcher = Tessellator::Fetcher.new
       end
 
-      def newest_album_name
-        'Unfinished Thunder'
+      def self.album_name
+        @@album_name
       end
 
-      def newest_album_slug
-        'unfinished-thunder'
+      def self.album_slug
+        @@album_slug
       end
 
-      def fetch_newest_album_id
-        request = @fetcher.get('https://pupper.bandcamp/album/' + newest_album_slug)
-        doc = Nokogiri::HTML(request.body)
+      def self.album_id
+        @@album_id
+      end
+
+      def self.album_date
+        @@album_date
+      end
+
+      def album_id_from_doc(doc)
         meta_og_video = doc.css('meta[property="og:video"]').first
         video_url = meta_og_video.property('content').value
         album_equals_id = video_url.split('/')[5] # "album=<album id>"
@@ -27,14 +39,30 @@ class PuppyRun
         album_id
       end
 
-      def newest_album_id
-        @@newest_album_id
+      def date_published_from_doc(doc)
+        meta_date_published = doc.css('meta[itemprop="datePublished"]').first
+        date_string = meta_date_published.property('content').value
+        date_parts = date_string.match(/(\d{4})(\d{2})(\d{2})/).captures
+
+        Time.new(*date_parts)
+      end
+
+      def fetch_newest_album!
+        request = @fetcher.get('https://pupper.bandcamp/album/' + Bandcamp.album_slug)
+        doc = Nokogiri::HTML(request.body)
+
+        @@album_id = album_id_from_doc(doc)
+        @@album_date = date_published_from_doc(doc)
+      end
+
+      def update!
+        fetch_newest_album!
       end
 
       def spawn_loop!
         Thread.new do
           loop do
-            @@newest_album_id = fetch_newestalbum_id
+            update!
             sleep 1 * 60 * 60 # 1 hour.
           end
         end

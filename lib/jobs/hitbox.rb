@@ -6,15 +6,6 @@ class PuppyRun
     class Hitbox
       @@is_streaming = false
 
-      # Use the Hitbox API to check if I'm streaming.
-      # Set @@is_streaming to the result.
-      def check_if_streaming!
-        response = Tessellator::Fetcher.new.call('get', 'https://api.hitbox.tv/user/duckinator')
-        is_live = JSON.parse(response.body)['is_live']
-
-        @@is_streaming = (is_live == '1')
-      end
-
       # Check if we're streaming (cached).
       def self.streaming?
         @@is_streaming
@@ -30,10 +21,19 @@ class PuppyRun
         end
       end
 
-      def spawn_loop!
+      # Use the Hitbox API to check if I'm streaming.
+      # Set @@is_streaming to the result.
+      def update!
+        response = Tessellator::Fetcher.new.call('get', 'https://api.hitbox.tv/user/duckinator')
+        is_live = JSON.parse(response.body)['is_live']
+
+        @@is_streaming = (is_live == '1')
+      end
+
+      def spawn_update_loop!
         Thread.new do
           loop do
-            check_if_streaming!
+            update!
             sleep 5 * 60 # 5 minutes.
           end
         end

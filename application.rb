@@ -1,12 +1,12 @@
 require 'sinatra'
 
 class PuppyRun < Sinatra::Base
-  %w[hitbox].each { |job|
+  %w[hitbox bandcamp].each { |job|
     require "./lib/jobs/#{job}.rb"
   }
 
   Jobs.constants.map(&Jobs.method(:const_get)).each { |job|
-    job.new.spawn_loop!
+    job.new.spawn_update_loop!
   }
 
   def streaming?
@@ -46,12 +46,18 @@ class PuppyRun < Sinatra::Base
   end
 
   get '/music' do
+    bc = Jobs::Bandcamp
+
     erb :music,
       layout: :default,
       locals: {
         title: 'Music',
         page: 'music',
         is_streaming: streaming?,
+        album_date: bc.album_date,
+        album_id: bc.album_id,
+        album_slug: bc.album_slug,
+        album_name: bc.album_name,
       }
   end
 

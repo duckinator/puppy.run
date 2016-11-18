@@ -9,7 +9,10 @@ GEM
       net-socket (~> 1.0.0)
     heresy-string (1.0.0)
     mayhaps (0.3.0)
+    mini_portile2 (2.1.0)
     net-socket (1.0.0)
+    nokogiri (1.6.8.1)
+      mini_portile2 (~> 2.1.0)
     openssl-better_defaults (0.0.1)
     puma (3.6.0)
     rack (1.6.5)
@@ -30,6 +33,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  nokogiri
   puma
   sinatra
   tessellator-fetcher
