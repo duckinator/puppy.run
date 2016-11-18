@@ -8,4 +8,4 @@ Basically, it has pages for:
 * most recent significant code-related things (e.g. new releases)
 * most recent Bandcamp album + most recent SoundCloud song
 
-The homepage shows the most recent of those three pages.
+The homepage shows the most recently updated of those three pages.
