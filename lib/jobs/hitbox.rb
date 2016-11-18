@@ -6,7 +6,7 @@ class PuppyRun
     class Hitbox
       # Use the Hitbox API to check if I'm streaming.
       # Set @@is_streaming to the result.
-      def self.is_streaming!
+      def is_streaming!
         response = Tessellator::Fetcher.new.call('get', 'https://api.hitbox.tv/user/duckinator')
         is_live = JSON.parse(response.body)['is_live']
 
@@ -14,11 +14,21 @@ class PuppyRun
       end
 
       # Check if we're streaming (cached).
-      def self.streaming?
+      def streaming?
         @@is_streaming
       end
 
-      def self.spawn_loop!
+      def updated_at
+        if streaming?
+          Time.now
+        else
+          # If not streaming, return a date that'll
+          # always be older than everything else.
+          Time.new(1900, 1, 1)
+        end
+      end
+
+      def spawn_loop!
         Thread.new do
           loop do
             @@is_streaming = self.is_streaming!

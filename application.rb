@@ -6,7 +6,7 @@ class PuppyRun < Sinatra::Base
   }
 
   Jobs.constants.map(&Jobs.method(:const_get)).each { |job|
-    job.spawn_loop!
+    job.new.spawn_loop!
   }
 
   def streaming?
