@@ -5,24 +5,46 @@ class PuppyRun < Sinatra::Base
     require "./lib/jobs/#{job}.rb"
   }
 
-  Jobs.constants.map(&Jobs.method(:const_get)).each { |job|
+  JOBS = Jobs.constants.map(&Jobs.method(:const_get))
+
+  JOBS.each { |job|
     job.new.spawn_update_loop!
+  }
+
+  TITLES = {
+    stream: 'Live Streams',
+    code: 'Code',
+    music: 'Music',
   }
 
   def streaming?
     Jobs::Hitbox.streaming?
   end
 
+  def generate_kwargs(view, page=nil)
+    bc = Jobs::Bandcamp
+
+    {
+      layout: :default,
+      locals: {
+        title: TITLES[view],
+        page: page || view.to_s,
+        is_streaming: streaming?,
+        album_date: bc.album_date,
+        album_id: bc.album_id,
+        album_slug: bc.album_slug,
+        album_name: bc.album_name,
+      }
+    }
+  end
+
   set :public_folder, File.dirname(__FILE__) + '/static'
 
   get '/' do
-    erb :index,
-      layout: :default,
-      locals: {
-        title: nil,
-        page: 'home',
-        is_streaming: streaming?,
-      }
+    view = JOBS.sort_by(&:updated_at).last.view
+
+    erb view,
+      **generate_kwargs(view, 'home')
   end
 
   get '/stream' do
@@ -58,16 +80,6 @@ class PuppyRun < Sinatra::Base
         album_id: bc.album_id,
         album_slug: bc.album_slug,
         album_name: bc.album_name,
-      }
-  end
-
-  get '/writing' do
-    erb :writing,
-      layout: :default,
-      locals: {
-        title: 'Writing',
-        page: 'writing',
-        is_streaming: streaming?,
       }
   end
 end

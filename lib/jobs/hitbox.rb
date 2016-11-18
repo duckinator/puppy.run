@@ -6,12 +6,16 @@ class PuppyRun
     class Hitbox
       @@is_streaming = false
 
+      def self.view
+        :stream
+      end
+
       # Check if we're streaming (cached).
       def self.streaming?
         @@is_streaming
       end
 
-      def updated_at
+      def self.updated_at
         if Hitbox.streaming?
           Time.now
         else

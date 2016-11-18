@@ -14,6 +14,10 @@ class PuppyRun
         @fetcher = Tessellator::Fetcher.new
       end
 
+      def self.view
+        :music
+      end
+
       def self.album_name
         @@album_name
       end
@@ -28,6 +32,10 @@ class PuppyRun
 
       def self.album_date
         @@album_date
+      end
+
+      def self.updated_at
+        Bandcamp.album_date
       end
 
       def album_id_from_doc(doc)
