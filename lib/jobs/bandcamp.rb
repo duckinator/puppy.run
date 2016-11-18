@@ -59,7 +59,7 @@ class PuppyRun
         fetch_newest_album!
       end
 
-      def spawn_loop!
+      def spawn_update_loop!
         Thread.new do
           loop do
             update!
