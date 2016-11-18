@@ -11,6 +11,22 @@
   </head>
 
   <body>
-    <%= yield %>
+    <header id="navigation">
+      <p class="navigation-toggle show"><a href="#navigation">Show Navigation</a></p>
+      <p class="navigation-toggle hide"><a href="#">Hide Navigation</a></p>
+
+      <nav>
+        <ul>
+          <li><a class="<%= page == 'home' ? 'active' : '' %> home" href="/">Home</a></li><!--
+          --><li><a class="<%= page == 'stream' ? 'active' : '' %> stream" href="/stream">Stream</a></li><!--
+          --><li><a class="<%= page == 'code' ? 'active' : '' %> code" href="/code">Code</a></li><!--
+          --><li><a class="<%= page == 'music' ? 'active' : '' %> music" href="/music">Music</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main class="constraint">
+      <%= yield %>
+    </main>
   </body>
 </html>

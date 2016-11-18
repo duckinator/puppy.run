@@ -1,0 +1,188 @@
+/* vim: set ft=css */
+
+html {
+  box-sizing: border-box;
+  text-rendering: optimizeLegibility;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+a, a:visited {
+  color: #166491;
+}
+
+a:active, a:focus, a:hover {
+  color: #2197db;
+}
+
+/*
+ *  * See https://developer.mozilla.org/en/Images,_Tables,_and_Mysterious_Gaps
+ *   *+ for why this is needed. (it doesn't apply to just tables)
+ *    */
+img {
+  display: inline-block;
+  vertical-align: bottom;
+
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'robotoregular', sans-serif;
+}
+
+html, body, .navigation-toggle.show {
+  background: #eee;
+}
+
+body {
+  color: #111;
+}
+
+.monospace, code {
+  font-family: "DejaVu Sans Mono","Bitstream Vera Sans Mono","Liberation Mono",Monaco,"Lucida Console","Courier New",monospace;
+}
+
+h1, h2, h3, h4, h5 {
+  padding: 0;
+  margin: 20px 0;
+
+  font-family: 'droid_serifbold', serif;
+}
+
+h1 { font-size: 3em;    }
+h2 { font-size: 2em;  }
+h3 { font-size: 1.75em;  }
+h4 { font-size: 1.5em;  }
+h5 { font-size: 1.3em;  }
+
+h1 {
+  padding: 0;
+  padding-top: 0.25em;
+  padding-bottom: 0.5em;
+  margin: 0;
+}
+
+h2, h3, h4, h5 {
+  padding: 0;
+  padding-top: 0.25em;
+  margin: 0;
+}
+
+/* Section anchors don't get underlines. */
+h1 a, h2 a, h3 a, h4 a, h5 a {
+  text-decoration: none;
+  position: relative;
+}
+
+.constraint {
+  max-width: 680px;
+  margin: auto;
+  padding: 1em;
+}
+
+main, main.constraint {
+  padding-top: 1.75em;
+}
+
+/* ======================
+ * Navigation
+ * ======================
+ */
+
+.navigation-toggle {
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  padding: 0;
+  margin: 0;
+
+  z-index: 2;
+}
+
+.navigation-toggle.hide {
+  display: none;
+}
+.navigation-toggle.show {
+  display: block;
+  width: 100%;
+}
+
+#navigation:target .navigation-toggle.hide {
+  display: block;
+}
+#navigation:target .navigation-toggle.show {
+  display: none;
+}
+
+#navigation nav {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+
+  min-width: 20ch;
+
+  padding: 1em 0;
+  /* Room for 'Hide Navigation' link. */
+  padding-top: 5em;
+
+  background: #722974;
+}
+#navigation:target nav {
+  display: block;
+}
+
+#navigation nav ul {
+  display: block;
+  padding: 0;
+  margin: 0;
+}
+
+#navigation li, #navigation a {
+  display: block;
+  padding: 0;
+  margin: 0;
+}
+
+#navigation a {
+  padding: 1em;
+  padding-right: 2em;
+}
+
+#navigation nav a, #navigation .navigation-toggle.hide a {
+  color: #fff;
+}
+
+#navigation a.active {
+  padding-right: 1em;
+  border-left: 1em #fa741b solid;
+}
+
+@media (min-width: 1000px) {
+  #navigation nav {
+    display: block;
+    padding-top: 1em;
+  }
+  .navigation-toggle.show,
+  .navigation-toggle.hide { display: none; }
+}
+
+/* =================
+ * Posts list view.
+ * =================
+ */
+
+.post-list h2 {
+  margin-bottom: 0.5em;
+}
+
+.post-list .pagination {
+  border-top: 1px solid #333;
+  padding: 1em 0;
+}
+

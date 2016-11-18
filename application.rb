@@ -1,45 +1,54 @@
 require 'sinatra'
-require 'json'
-require 'tessellator/fetcher'
-
-class IsStreamingJob
-  # Use the Hitbox API to check if I'm streaming.
-  # Set @@is_streaming to the result.
-  def self.is_streaming!
-    response = Tessellator::Fetcher.new.call('get', 'https://api.hitbox.tv/user/duckinator')
-    is_live = JSON.parse(response.body)['is_live']
-    @@is_streaming = (is_live == '1')
-  end
-
-  # Check if we're streaming (cached).
-  def self.streaming?
-    @@is_streaming
-  end
-
-  def self.is_streaming_loop
-    Thread.new do
-      loop do
-        IsStreamingJob.is_streaming!
-        sleep 5 * 60 # 5 minutes.
-      end
-    end
-  end
-  is_streaming_loop
-end
 
 class PuppyRun < Sinatra::Base
+  %w[hitbox].each { |job|
+    require "./lib/jobs/#{job}.rb"
+  }
+
+  Jobs.constants.each { |job|
+    job.spawn_loop!
+  }
+
+
+
   set :public_folder, File.dirname(__FILE__) + '/static'
 
-  def streaming?
-    IsStreamingJob.streaming?
-  end
-
   get '/' do
+    is_streaming = Jobs::Hitbox.streaming?
+
     erb :index,
       layout: :default,
       locals: {
         title: nil,
-        is_streaming: streaming?,
+        page: 'home',
+        is_streaming: is_streaming,
+      }
+  end
+
+  get '/stream' do
+    erb :stream,
+      layout: :default,
+      locals: {
+        title: 'Stream',
+        page: 'stream',
+      }
+  end
+
+  get '/code' do
+    erb :code,
+      layout: :default,
+      locals: {
+        title: 'Code',
+        page: 'code',
+      }
+  end
+
+  get '/music' do
+    erb :music,
+      layout: :default,
+      locals: {
+        title: 'Music',
+        page: 'music',
       }
   end
 end
