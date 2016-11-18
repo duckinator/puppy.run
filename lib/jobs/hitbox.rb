@@ -4,6 +4,8 @@ require 'tessellator/fetcher'
 class PuppyRun
   class Jobs
     class Hitbox
+      @@is_streaming = false
+
       # Use the Hitbox API to check if I'm streaming.
       # Set @@is_streaming to the result.
       def is_streaming!
