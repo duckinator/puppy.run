@@ -14,12 +14,12 @@ class PuppyRun
       end
 
       # Check if we're streaming (cached).
-      def streaming?
+      def self.streaming?
         @@is_streaming
       end
 
       def updated_at
-        if streaming?
+        if Hitbox.streaming?
           Time.now
         else
           # If not streaming, return a date that'll
@@ -31,7 +31,7 @@ class PuppyRun
       def spawn_loop!
         Thread.new do
           loop do
-            @@is_streaming = self.is_streaming!
+            @@is_streaming = Hitbox.is_streaming!
             sleep 5 * 60 # 5 minutes.
           end
         end
