@@ -29,7 +29,7 @@ class PuppyRun < Sinatra::Base
     erb :stream,
       layout: :default,
       locals: {
-        title: 'Stream',
+        title: 'Live Streams',
         page: 'stream',
         is_streaming: streaming?,
       }
