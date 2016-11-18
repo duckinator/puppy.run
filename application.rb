@@ -5,7 +5,7 @@ class PuppyRun < Sinatra::Base
     require "./lib/jobs/#{job}.rb"
   }
 
-  Jobs.constants.each { |job|
+  Jobs.constants.map(&Jobs.method(:const_get)).each { |job|
     job.spawn_loop!
   }
 
