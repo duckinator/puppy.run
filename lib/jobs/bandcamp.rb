@@ -32,7 +32,7 @@ class PuppyRun
 
       def album_id_from_doc(doc)
         meta_og_video = doc.css('meta[property="og:video"]').first
-        video_url = meta_og_video.property('content').value
+        video_url = meta_og_video.attribute('content').value
         album_equals_id = video_url.split('/')[5] # "album=<album id>"
         album_id = album_equals_id.split('=')[1]
 
@@ -41,15 +41,15 @@ class PuppyRun
 
       def date_published_from_doc(doc)
         meta_date_published = doc.css('meta[itemprop="datePublished"]').first
-        date_string = meta_date_published.property('content').value
+        date_string = meta_date_published.attribute('content').value
         date_parts = date_string.match(/(\d{4})(\d{2})(\d{2})/).captures
 
         Time.new(*date_parts)
       end
 
       def fetch_newest_album!
-        request = @fetcher.get('https://pupper.bandcamp/album/' + Bandcamp.album_slug)
-        doc = Nokogiri::HTML(request.body)
+        req = @fetcher.call('get', 'https://pupper.bandcamp.com/album/' + Bandcamp.album_slug)
+        doc = Nokogiri::HTML(req.body)
 
         @@album_id = album_id_from_doc(doc)
         @@album_date = date_published_from_doc(doc)
