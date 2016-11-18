@@ -1,0 +1,36 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    curl_cacert (1.0.0)
+    default (1.0.0)
+    heresy (4.0.0)
+      default (~> 1.0.0)
+      heresy-string (~> 1.0.0)
+      net-socket (~> 1.0.0)
+    heresy-string (1.0.0)
+    mayhaps (0.3.0)
+    net-socket (1.0.0)
+    openssl-better_defaults (0.0.1)
+    rack (1.6.5)
+    rack-protection (1.5.3)
+      rack
+    sinatra (1.4.7)
+      rack (~> 1.5)
+      rack-protection (~> 1.4)
+      tilt (>= 1.3, < 3)
+    tessellator-fetcher (5.0.0)
+      curl_cacert
+      heresy (~> 4.0.0)
+      mayhaps (~> 0.3.0)
+      openssl-better_defaults
+    tilt (2.0.5)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  sinatra
+  tessellator-fetcher
+
+BUNDLED WITH
+   1.12.5
