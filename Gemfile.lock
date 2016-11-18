@@ -11,6 +11,7 @@ GEM
     mayhaps (0.3.0)
     net-socket (1.0.0)
     openssl-better_defaults (0.0.1)
+    puma (3.6.0)
     rack (1.6.5)
     rack-protection (1.5.3)
       rack
@@ -29,8 +30,12 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  puma
   sinatra
   tessellator-fetcher
 
+RUBY VERSION
+   ruby 2.2.6p396
+
 BUNDLED WITH
-   1.12.5
+   1.13.6
