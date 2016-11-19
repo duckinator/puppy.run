@@ -1,4 +1,5 @@
 require 'json'
+require 'date'
 require 'tessellator/fetcher'
 
 class PuppyRun
@@ -17,11 +18,11 @@ class PuppyRun
 
       def self.updated_at
         if Hitbox.streaming?
-          Time.now
+          DateTime.now
         else
           # If not streaming, return a date that'll
           # always be older than everything else.
-          Time.new(1900, 1, 1)
+          DateTime.new(1900, 1, 1)
         end
       end
 

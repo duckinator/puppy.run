@@ -1,5 +1,6 @@
 require 'tessellator/fetcher'
 require 'nokogiri'
+require 'date'
 
 class PuppyRun
   class Jobs
@@ -52,7 +53,7 @@ class PuppyRun
         date_string = meta_date_published.attribute('content').value
         date_parts = date_string.match(/(\d{4})(\d{2})(\d{2})/).captures
 
-        Time.new(*date_parts)
+        DateTime.new(*date_parts)
       end
 
       def fetch_newest_album!
