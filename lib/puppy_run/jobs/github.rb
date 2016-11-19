@@ -26,7 +26,7 @@ class PuppyRun
           push_time: @@push_time,
           tag: @@tag,
           repo_description: @@repo_description,
-          changelog: ::PuppyRun::GitHub.changelog(@@repo, @@tag),
+          changelog: @@changelog,
         }
       end
 
@@ -34,14 +34,24 @@ class PuppyRun
         @@push_time
       end
 
-      def fetch_events!
-        req = @fetcher.call('get', 'https://api.github.com/users/duckinator/events')
+      def fetch_events!(page = 2)
+        req = @fetcher.call('get', 'https://api.github.com/users/duckinator/events?page=' + page.to_s)
         events = JSON.parse(req.body)
+
+        # Handle API Rate limiting. (By doing nothing.)
+        return if events['message']
+
         # Find a tag event. This usually means a release.
         event = events.find { |event|
           event['type'] == 'CreateEvent' &&
             event['payload']['ref_type'] == 'tag'
         }
+
+        # The events API supports pagination for up to ten pages.
+        # Go through the first ten pages until an event is found.
+        if event.nil? && page < 10
+#          return fetch_events!(page + 1)
+        end
 
         # If no tag event is found, leave values at what
         # they currently are.
@@ -52,9 +62,10 @@ class PuppyRun
         return unless event
 
         @@repo = event['repo']['name']
-        @@push_time = DateTime.parse(event['repo']['created_at'])
+        @@push_time = DateTime.parse(event['created_at'])
         @@tag = event['payload']['ref']
         @@repo_description = event['payload']['description']
+        @@changelog = ::PuppyRun::GitHub.changelog(@@repo, @@tag)
       end
 
       def update!

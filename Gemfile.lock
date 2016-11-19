@@ -8,6 +8,7 @@ GEM
       heresy-string (~> 1.0.0)
       net-socket (~> 1.0.0)
     heresy-string (1.0.0)
+    kramdown (1.12.0)
     mayhaps (0.3.0)
     mini_portile2 (2.1.0)
     net-socket (1.0.0)
@@ -33,6 +34,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  kramdown
   nokogiri
   puma
   sinatra

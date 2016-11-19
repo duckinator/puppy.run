@@ -1,4 +1,4 @@
-<% if tag_push_event %>
+<% if tag_push_event['repo'] %>
 
 Latest release: <a href="https://github.com/<%= tag_push_event['repo'] %>/tree/<%= tag_push_event['tag'] %>"><%= tag_push_event['tag'] %></a> of <a href="https://github.com/<%= tag_push_event['repo'] %>"><%= tag_push_event['repo'] %></a>.
 
@@ -7,5 +7,7 @@ Changelog for <%= tag_push_event['tag'] %>:
 <%= tag_push_event['changelog'] %>
 
 <% else %>
+
+No recent releases.
 
 <% end %>

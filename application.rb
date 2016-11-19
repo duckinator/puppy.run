@@ -34,6 +34,7 @@ class PuppyRun < Sinatra::Base
         album_id: bc.album_id,
         album_slug: bc.album_slug,
         album_name: bc.album_name,
+        tag_push_event: Jobs::GitHub.tag_push_event,
       }
     }
   end
@@ -41,7 +42,7 @@ class PuppyRun < Sinatra::Base
   set :public_folder, File.dirname(__FILE__) + '/static'
 
   get '/' do
-    view = JOBS.sort_by(&:updated_at).last.view
+    view = JOBS.reject { |x| x.updated_at.nil? }.sort_by(&:updated_at).last.view
     title = "Latest: #{TITLES[view]}"
 
     erb view,
@@ -59,13 +60,9 @@ class PuppyRun < Sinatra::Base
   end
 
   get '/code' do
+    Jobs::GitHub.new.update!
     erb :code,
-      layout: :default,
-      locals: {
-        title: 'Code',
-        page: 'code',
-        is_streaming: streaming?,
-      }
+      **generate_kwargs(:code)
   end
 
   get '/music' do
