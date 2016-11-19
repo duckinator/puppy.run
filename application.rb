@@ -1,8 +1,8 @@
 require 'sinatra'
 
 class PuppyRun < Sinatra::Base
-  %w[hitbox bandcamp].each { |job|
-    require "./lib/jobs/#{job}.rb"
+  %w[hitbox bandcamp github].each { |job|
+    require "puppy_run/jobs/#{job}.rb"
   }
 
   JOBS = Jobs.constants.map(&Jobs.method(:const_get))

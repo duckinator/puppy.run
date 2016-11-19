@@ -1,5 +1,6 @@
 require 'tessellator/fetcher'
 require 'json'
+require 'puppy_run/github'
 
 class PuppyRun
   class Jobs
@@ -17,24 +18,20 @@ class PuppyRun
         :code
       end
 
-      def self.repo
-        @@repo
-      end
+      def self.tag_push_event
+        return nil if @@repo.nil?
 
-      def self.push_time
-        @@push_time
+        {
+          repo: @@repo,
+          push_time: @@push_time,
+          tag: @@tag,
+          repo_description: @@repo_description,
+          changelog: ::PuppyRun::GitHub.changelog(@@repo, @@tag),
+        }
       end
 
       def self.updated_at
         @@push_time
-      end
-
-      def self.tag
-        @@tag
-      end
-
-      def self.repo_description
-        @@description
       end
 
       def fetch_events!
