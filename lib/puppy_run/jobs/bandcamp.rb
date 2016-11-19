@@ -53,7 +53,7 @@ class PuppyRun
         date_string = meta_date_published.attribute('content').value
         date_parts = date_string.match(/(\d{4})(\d{2})(\d{2})/).captures
 
-        DateTime.new(*date_parts)
+        DateTime.new(*date_parts.map(&:to_i))
       end
 
       def fetch_newest_album!
