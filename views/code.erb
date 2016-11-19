@@ -1,8 +1,8 @@
 <% if tag_push_event %>
 
-Latest release: <a href="https://github.com/<%= tag_push_event['repo'] %>/tree/<%= tag_push_event['tag'] %>"><%= tag_push_event['tag'] %></a> of <a href="https://github.com/<%= tag_push_event['repo'] %>"><%= tag_push_event['repo'] %></a>.
+<p><a href="https://github.com/<%= tag_push_event['repo'] %>"><%= tag_push_event['repo'] %></a> <a href="https://github.com/<%= tag_push_event['repo'] %>/tree/<%= tag_push_event['tag'] %>"><%= tag_push_event['tag'] %></a> was released on <%= tag_push_event['push_time'].strftime('%B %e, %Y') %>.</p>
 
-Changelog for <%= tag_push_event['tag'] %>:
+<h2>Changelog</h2>
 
 <%= tag_push_event['changelog'] %>
 

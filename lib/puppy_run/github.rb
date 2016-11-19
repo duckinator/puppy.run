@@ -17,9 +17,7 @@ class PuppyRun
           return '<p>No change log found.</p>'
         end
 
-        changelog_text = parts.last.split("\n## ").first
-
-        changelog = "## #{repo} #{tag} Changelog" + changelog_text
+        changelog = parts.last.split("\n## ").first
 
         Kramdown::Document.new(changelog).to_html
       end
