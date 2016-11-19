@@ -34,12 +34,12 @@ class PuppyRun
         @@push_time
       end
 
-      def fetch_events!(page = 2)
+      def fetch_events!(page = 1)
         req = @fetcher.call('get', 'https://api.github.com/users/duckinator/events?page=' + page.to_s)
         events = JSON.parse(req.body)
 
         # Handle API Rate limiting. (By doing nothing.)
-        return if events['message']
+        return if events.is_a?(Hash) && events['message']
 
         # Find a tag event. This usually means a release.
         event = events.find { |event|
@@ -50,7 +50,7 @@ class PuppyRun
         # The events API supports pagination for up to ten pages.
         # Go through the first ten pages until an event is found.
         if event.nil? && page < 10
-#          return fetch_events!(page + 1)
+          return fetch_events!(page + 1)
         end
 
         # If no tag event is found, leave values at what
@@ -59,7 +59,7 @@ class PuppyRun
         # If there was a tag found previously, it'll remain the
         # latest release. If there wasn't, everything will
         # remain nil.
-        return unless event
+        return if event.nil?
 
         @@repo = event['repo']['name']
         @@push_time = DateTime.parse(event['created_at'])
