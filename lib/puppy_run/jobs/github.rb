@@ -22,11 +22,11 @@ class PuppyRun
         return nil if @@repo.nil?
 
         {
-          repo: @@repo,
-          push_time: @@push_time,
-          tag: @@tag,
-          repo_description: @@repo_description,
-          changelog: @@changelog,
+          'repo' => @@repo,
+          'push_time' => @@push_time,
+          'tag' => @@tag,
+          'repo_description' => @@repo_description,
+          'changelog' => @@changelog,
         }
       end
 
