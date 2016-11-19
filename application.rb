@@ -21,13 +21,13 @@ class PuppyRun < Sinatra::Base
     Jobs::Hitbox.streaming?
   end
 
-  def generate_kwargs(view, page=nil)
+  def generate_kwargs(view, page=nil, title=nil)
     bc = Jobs::Bandcamp
 
     {
       layout: :default,
       locals: {
-        title: TITLES[view],
+        title: title || TITLES[view],
         page: page || view.to_s,
         is_streaming: streaming?,
         album_date: bc.album_date,
@@ -42,9 +42,10 @@ class PuppyRun < Sinatra::Base
 
   get '/' do
     view = JOBS.sort_by(&:updated_at).last.view
+    title = "Latest: #{TITLES[view]}"
 
     erb view,
-      **generate_kwargs(view, 'home')
+      **generate_kwargs(view, 'home', title)
   end
 
   get '/stream' do
