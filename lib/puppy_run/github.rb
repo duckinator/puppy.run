@@ -10,8 +10,16 @@ class PuppyRun
 
         raw_changelog = get("https://raw.githubusercontent.com/#{repo}/#{tag}/#{changelog_file}")
 
-        separator = "## [#{tag}]\n"
-        changelog = separator + raw_changelog.split(separator).last.split('## ').first
+        separator = /## \[#{tag.gsub(/^v(\d)/, 'v?\1').gsub('.', '\\.')}\]/
+        parts = raw_changelog.split(separator)
+
+        if parts.length == 1
+          return '<p>No change log found.</p>'
+        end
+
+        changelog_text = parts.last.split("\n## ").first
+
+        changelog = "## #{repo} #{tag} Changelog" + changelog_text
 
         Kramdown::Document.new(changelog).to_html
       end
@@ -24,7 +32,7 @@ class PuppyRun
       def get_changelog_file(repo)
         files = JSON.parse(get("https://api.github.com/repos/#{repo}/contents/"))
 
-        files.find { |f| f['name'] =~ /^changelog/i }
+        files.find { |f| f['name'] =~ /^changelog/i }['name']
       end
     end
   end
