@@ -60,7 +60,6 @@ class PuppyRun < Sinatra::Base
   end
 
   get '/code' do
-    Jobs::GitHub.new.update!
     erb :code,
       **generate_kwargs(:code)
   end
