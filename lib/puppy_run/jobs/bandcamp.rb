@@ -19,24 +19,17 @@ class PuppyRun
         :music
       end
 
-      def self.album_name
-        @@album_name
-      end
-
-      def self.album_slug
-        @@album_slug
-      end
-
-      def self.album_id
-        @@album_id
-      end
-
-      def self.album_date
-        @@album_date
+      def self.album
+        {
+          date: @@album_date,
+          id: @@album_id,
+          slug: @@album_slug,
+          name: @album_name,
+        }
       end
 
       def self.updated_at
-        Bandcamp.album_date
+        @@album_date
       end
 
       def album_id_from_doc(doc)
@@ -57,7 +50,7 @@ class PuppyRun
       end
 
       def fetch_newest_album!
-        req = @fetcher.call('get', 'https://pupper.bandcamp.com/album/' + Bandcamp.album_slug)
+        req = @fetcher.call('get', 'https://pupper.bandcamp.com/album/' + @@album_slug)
         doc = Nokogiri::HTML(req.body)
 
         @@album_id = album_id_from_doc(doc)

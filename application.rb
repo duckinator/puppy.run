@@ -18,18 +18,13 @@ class PuppyRun < Sinatra::Base
   }
 
   def generate_kwargs(view, page=nil, title=nil)
-    bc = Jobs::Bandcamp
-
     {
       layout: :default,
       locals: {
         title: title || TITLES[view],
         page: page || view.to_s,
         is_streaming: Jobs::Hitbox.streaming?,
-        album_date: bc.album_date,
-        album_id: bc.album_id,
-        album_slug: bc.album_slug,
-        album_name: bc.album_name,
+        album: Jobs::Bandcamp.album,
         tag_push_event: Jobs::GitHub.tag_push_event,
         statuses: Jobs::Howamidoing.statuses,
       }

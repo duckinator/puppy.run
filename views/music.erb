@@ -1,8 +1,8 @@
-<% if album_date %>
+<% if album[:date] %>
 
 <p>Latest album:</p>
 
-<iframe style="border: 0; width: 450px; height: 120px;" src="https://bandcamp.com/EmbeddedPlayer/album=<%= album_id %>/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/artwork=small/transparent=true/" seamless><a href="http://pupper.bandcamp.com/album/<%= album_slug %>"><%= album_name %> by pupper</a></iframe>
+<iframe style="border: 0; width: 450px; height: 120px;" src="https://bandcamp.com/EmbeddedPlayer/album=<%= album[:id] %>/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/artwork=small/transparent=true/" seamless><a href="http://pupper.bandcamp.com/album/<%= album[:slug] %>"><%= album[:name] %> by pupper</a></iframe>
 
 <p>Recent songs:</p>
 
