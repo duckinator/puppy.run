@@ -1,7 +1,7 @@
 require 'sinatra'
 
 class PuppyRun < Sinatra::Base
-  %w[hitbox bandcamp github].each { |job|
+  %w[hitbox bandcamp github howamidoing].each { |job|
     require "puppy_run/jobs/#{job}.rb"
   }
 
