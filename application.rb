@@ -35,6 +35,7 @@ class PuppyRun < Sinatra::Base
         album_slug: bc.album_slug,
         album_name: bc.album_name,
         tag_push_event: Jobs::GitHub.tag_push_event,
+        statuses: Jobs::Howamidoing.statuses,
       }
     }
   end
