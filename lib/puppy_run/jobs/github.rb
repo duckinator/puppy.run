@@ -10,6 +10,7 @@ class PuppyRun
       @@push_time = nil
       @@tag = nil
       @@repo_description = nil
+      @@changelog = nil
 
       def initialize
         @fetcher = Tessellator::Fetcher.new
