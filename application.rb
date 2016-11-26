@@ -17,10 +17,6 @@ class PuppyRun < Sinatra::Base
     music: 'Music',
   }
 
-  def streaming?
-    Jobs::Hitbox.streaming?
-  end
-
   def generate_kwargs(view, page=nil, title=nil)
     bc = Jobs::Bandcamp
 
@@ -29,7 +25,7 @@ class PuppyRun < Sinatra::Base
       locals: {
         title: title || TITLES[view],
         page: page || view.to_s,
-        is_streaming: streaming?,
+        is_streaming: Jobs::Hitbox.streaming?,
         album_date: bc.album_date,
         album_id: bc.album_id,
         album_slug: bc.album_slug,
@@ -52,12 +48,7 @@ class PuppyRun < Sinatra::Base
 
   get '/stream' do
     erb :stream,
-      layout: :default,
-      locals: {
-        title: 'Live Streams',
-        page: 'stream',
-        is_streaming: streaming?,
-      }
+      **generate_kwargs(:stream)
   end
 
   get '/code' do
@@ -66,8 +57,6 @@ class PuppyRun < Sinatra::Base
   end
 
   get '/music' do
-    bc = Jobs::Bandcamp
-
     erb :music,
       **generate_kwargs(:music)
   end

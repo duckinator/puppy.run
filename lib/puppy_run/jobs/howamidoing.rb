@@ -19,7 +19,7 @@ class PuppyRun
         nil # Returning nil means don't make it the homepage.
       end
 
-      # Use the howamidoing API to check if I'm streaming.
+      # Use the howamidoing API to check my statuses.
       # Set @@statuses to the result.
       def update!
         response = Tessellator::Fetcher.new.call('get', 'https://howamidoing-duckinator.herokuapp.com/status.json')
