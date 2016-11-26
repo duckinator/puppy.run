@@ -68,16 +68,7 @@ class PuppyRun < Sinatra::Base
     bc = Jobs::Bandcamp
 
     erb :music,
-      layout: :default,
-      locals: {
-        title: 'Music',
-        page: 'music',
-        is_streaming: streaming?,
-        album_date: bc.album_date,
-        album_id: bc.album_id,
-        album_slug: bc.album_slug,
-        album_name: bc.album_name,
-      }
+      **generate_kwargs(:music)
   end
 end
 
