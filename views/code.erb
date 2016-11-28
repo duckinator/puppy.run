@@ -1,3 +1,5 @@
+You can find my code on <a href="https://github.com/duckinator">GitHub</a> and <a href="https://gitlab.com/duckinator">GitLab</a>.
+
 <% if tag_push_event %>
 
 <p><a href="https://github.com/<%= tag_push_event['repo'] %>"><%= tag_push_event['repo'] %></a> <a href="https://github.com/<%= tag_push_event['repo'] %>/tree/<%= tag_push_event['tag'] %>"><%= tag_push_event['tag'] %></a> was released on <%= tag_push_event['push_time'].strftime('%B %e, %Y') %>.</p>
