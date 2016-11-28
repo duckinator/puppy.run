@@ -1,3 +1,19 @@
-<p>beep beep</p>
+<p>Hi. I'm Ellen Dash (aka pup or duckie). I'm a nonbinary Pittsburgh-based photographer, musician, writer, and programmer, among other things.</p>
 
-<p>is_streaming == <%= is_streaming %></p>
+<p>You can find information about my <a href="/code">code</a> and <a href="/music">music</a>, as well as if I am currently <a href="/stream">streaming</a> on this website.</p>
+
+<p>My writing can be found on <a href="https://inatri.com">Inatri</a>, <a href="http://dtc.onl">Duckie Talks Computers</a>, and <a href="http://trainsgender.com">Trains Gender and Nonbinary Expression</a>.</p>
+
+<% if most_recently_updated == :stream %>
+  <p>I am currently <a href="/stream">streaming</a>.</p>
+<% else %>
+  <p>My most recently updated work is 
+
+  <% mru = most_recently_updated %>
+  <% if mru == :github %>
+    <a href="/code">the release of <%= tag_push_event['repo'] %> <%= tag_push_event['tag'] %></a>.
+  <% elsif mru == :bandcamp %>
+    <a href="/music">the release of <%= album[:name] %></a>.
+  <% end %>
+<% end %>
+

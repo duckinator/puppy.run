@@ -17,6 +17,14 @@ class PuppyRun < Sinatra::Base
     music: 'Music',
   }
 
+  def most_recently_updated
+    JOBS.reject { |x| x.updated_at.nil? }.sort_by(&:updated_at).last
+  end
+
+  def most_recently_updated_name
+    most_recently_updated.to_s.split(':').last.downcase.to_sym
+  end
+
   def generate_kwargs(view, page=nil, title=nil)
     {
       layout: :default,
@@ -27,6 +35,7 @@ class PuppyRun < Sinatra::Base
         album: Jobs::Bandcamp.album,
         tag_push_event: Jobs::GitHub.tag_push_event,
         statuses: Jobs::Howamidoing.statuses,
+        most_recently_updated: most_recently_updated_name,
       }
     }
   end
@@ -34,11 +43,8 @@ class PuppyRun < Sinatra::Base
   set :public_folder, File.dirname(__FILE__) + '/static'
 
   get '/' do
-    view = JOBS.reject { |x| x.updated_at.nil? }.sort_by(&:updated_at).last.view
-    title = "Latest: #{TITLES[view]}"
-
-    erb view,
-      **generate_kwargs(view, 'home', title)
+    erb :index,
+      **generate_kwargs(:index)
   end
 
   get '/stream' do
