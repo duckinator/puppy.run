@@ -5,9 +5,8 @@ require 'date'
 class PuppyRun
   class Jobs
     class Bandcamp
-      # TODO: Make _name and _slug dynamic.
-      @@album_name = 'Unfinished Thunder'
-      @@album_slug = 'unfinished-thunder'
+      @@album_name = nil
+      @@album_slug = nil
       @@album_id = nil
       @@album_date = nil
 
@@ -32,6 +31,20 @@ class PuppyRun
         @@album_date
       end
 
+      def latest_album_from_doc(doc)
+        doc.css('li.music-grid-item').first
+      end
+
+      def album_name_from_doc(doc)
+        latest_album = latest_album_from_doc(doc)
+        latest_album.css('p.title').inner_html.strip
+      end
+
+      def album_slug_from_doc(doc)
+        latest_album = latest_album_from_doc(doc)
+        latest_album.css('a').attribute('href').value.split('/').last
+      end
+
       def album_id_from_doc(doc)
         meta_og_video = doc.css('meta[property="og:video"]').first
         video_url = meta_og_video.attribute('content').value
@@ -49,6 +62,16 @@ class PuppyRun
         DateTime.new(*date_parts.map(&:to_i))
       end
 
+      def determine_newest_album!
+        req = @fetcher.call('get', 'https://pupper.bandcamp.com/')
+        doc = Nokogiri::HTML(req.body)
+
+        @@album_name = album_name_from_doc(doc)
+        @@album_slug = album_slug_from_doc(doc)
+      end
+
+      # TODO: Determine if this can be done from inside of
+      #         `determine_newest_album!`.
       def fetch_newest_album!
         req = @fetcher.call('get', 'https://pupper.bandcamp.com/album/' + @@album_slug)
         doc = Nokogiri::HTML(req.body)
@@ -58,6 +81,8 @@ class PuppyRun
       end
 
       def update!
+        determine_newest_album!
+        sleep 5
         fetch_newest_album!
       end
 
